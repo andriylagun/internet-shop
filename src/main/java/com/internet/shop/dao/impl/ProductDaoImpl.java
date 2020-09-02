@@ -11,7 +11,7 @@ import java.util.Optional;
 public class ProductDaoImpl implements ProductDao {
     @Override
     public Product create(Product product) {
-        Storage.productStorage.add(product);
+        Storage.addProduct(product);
         return product;
     }
 
@@ -29,16 +29,15 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Product update(Product product) {
-        return Storage.productStorage.stream()
-                .filter(p -> p.getId().equals(product.getId()))
-                .map(p -> p = product)
-                .findFirst()
-                .orElseThrow();
+        Product updatedProduct = get(product.getId()).get();
+        updatedProduct.setName(product.getName());
+        updatedProduct.setPrice(product.getPrice());
+        return updatedProduct;
     }
 
     @Override
     public boolean delete(Long id) {
         return Storage.productStorage
-                .remove(get(id).orElseThrow());
+                .removeIf(p -> p.getId().equals(id));
     }
 }

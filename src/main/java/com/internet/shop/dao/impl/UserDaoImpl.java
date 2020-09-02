@@ -5,26 +5,42 @@ import com.internet.shop.db.Storage;
 import com.internet.shop.lib.Dao;
 import com.internet.shop.model.User;
 import java.util.List;
+import java.util.Optional;
 
 @Dao
 public class UserDaoImpl implements UserDao {
 
     @Override
-    public boolean addUser(User user) {
-        return Storage.userStorage.add(user);
+    public User create(User user) {
+        Storage.addUser(user);
+        return user;
     }
 
     @Override
-    public User getUserById(long id) {
+    public Optional<User> get(Long id) {
         return Storage.userStorage
                 .stream()
                 .filter(u -> u.getId() == id)
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .findFirst();
     }
 
     @Override
     public List<User> getAllUsers() {
         return Storage.userStorage;
+    }
+
+    @Override
+    public User update(User user) {
+        User updatedUser = get(user.getId()).get();
+        updatedUser.setLogin(user.getLogin());
+        updatedUser.setName(user.getName());
+        updatedUser.setPassword(user.getPassword());
+        return user;
+    }
+
+    @Override
+    public boolean remove(Long id) {
+        return Storage.userStorage
+                .removeIf(p -> p.getId().equals(id));
     }
 }
