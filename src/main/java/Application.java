@@ -17,9 +17,9 @@ public class Application {
             System.out.println(product);
         }
         System.out.println("Xiaomi Redmi Note 6 update:");
-        Product greenTeaProduct = productService.get(XIAOMI_ID);
-        greenTeaProduct.setPrice(350.00);
-        productService.update(greenTeaProduct);
+        Product xiaomi = productService.get(XIAOMI_ID);
+        xiaomi.setPrice(350.00);
+        productService.update(xiaomi);
         System.out.println(productService.get(XIAOMI_ID));
         System.out.println("Deleting iphone:");
         productService.delete(IPHONE_ID);
