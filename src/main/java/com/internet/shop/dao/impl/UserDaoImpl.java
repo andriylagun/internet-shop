@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User create(User user) {
         Storage.addUser(user);
@@ -20,7 +19,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> get(Long id) {
         return Storage.userStorage
                 .stream()
-                .filter(u -> u.getId() == id)
+                .filter(u -> u.getId().equals(id))
                 .findFirst();
     }
 
