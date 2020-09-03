@@ -1,5 +1,6 @@
 package com.internet.shop.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ public class Order {
     private Long userId;
 
     public Order(Long userId) {
-        this.products = products;
+        products = new ArrayList<>();
         this.userId = userId;
     }
 }
