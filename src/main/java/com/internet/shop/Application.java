@@ -4,15 +4,9 @@ import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
 import com.internet.shop.service.ProductService;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class Application {
     private static Injector injector = Injector.getInstance("com.internet.shop");
-    static int x =10;
+
     public static void main(String[] args) {
         ProductService productService = (ProductService) injector.getInstance(ProductService.class);
         Product iphone = new Product("Iphone", 800.50);
