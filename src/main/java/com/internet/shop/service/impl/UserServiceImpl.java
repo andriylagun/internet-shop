@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public User create(User user) {
@@ -18,13 +18,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(long id) {
+    public User get(long id) {
         return userDao.get(id).get();
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAll() {
         return userDao.getAllUsers();
     }
 
+    @Override
+    public User update(User user) {
+        return userDao.update(user);
+    }
+
+    @Override
+    public boolean remove(Long id) {
+        return userDao.remove(id);
+    }
 }
