@@ -19,18 +19,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart addProduct(ShoppingCart shoppingCart, Product product) {
-        return shoppingCartDao.addProduct(shoppingCart, product);
+        return null;
     }
 
     @Override
     public boolean deleteProduct(ShoppingCart shoppingCart, Product product) {
-        return shoppingCartDao.deleteProduct(shoppingCart, product);
+        return false;
     }
 
     @Override
-    public void clear(ShoppingCart shoppingCart) {
-        shoppingCartDao.clear(shoppingCart);
-    }
+    public void clear(ShoppingCart shoppingCart) { }
 
     @Override
     public ShoppingCart getByUserId(Long userId) {
@@ -39,6 +37,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public boolean delete(ShoppingCart shoppingCart) {
-        return shoppingCartDao.delete(shoppingCart);
+        return false;
     }
 }
