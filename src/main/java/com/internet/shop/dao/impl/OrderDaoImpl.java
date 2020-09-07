@@ -15,18 +15,7 @@ import java.util.stream.Collectors;
 @Dao
 public class OrderDaoImpl implements OrderDao {
     @Inject
-    ShoppingCartDao shoppingCartDao;
-
-    @Override
-    public Order completeOrder(ShoppingCart shoppingCart) {
-        List<Product> products = List.copyOf(shoppingCart.getProducts());
-        Long userId = shoppingCart.getUserId();
-        Order order = new Order(userId);
-        order.setProducts(products);
-        Storage.addOrder(order);
-        shoppingCartDao.clear(shoppingCart);
-        return order;
-    }
+    private ShoppingCartDao shoppingCartDao;
 
     @Override
     public List<Order> getUserOrders(Long userId) {
@@ -35,6 +24,11 @@ public class OrderDaoImpl implements OrderDao {
                 .filter(order -> order.getUserId()
                         .equals(userId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Order create(Order element) {
+        return null;
     }
 
     @Override
@@ -49,6 +43,11 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> getAll() {
         return Storage.orderStorage;
+    }
+
+    @Override
+    public Order update(Order element) {
+        return null;
     }
 
     @Override
