@@ -4,6 +4,7 @@ import com.internet.shop.dao.OrderDao;
 import com.internet.shop.lib.Inject;
 import com.internet.shop.lib.Service;
 import com.internet.shop.model.Order;
+import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.service.OrderService;
 import java.util.List;
@@ -11,11 +12,16 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Inject
-    OrderDao orderDao;
+    private OrderDao orderDao;
 
     @Override
     public Order completeOrder(ShoppingCart shoppingCart) {
-        return orderDao.completeOrder(shoppingCart);
+        List<Product> products = shoppingCart.getProducts();
+        Long userId = shoppingCart.getUserId();
+        Order order = new Order(userId);
+        order.setProducts(products);
+        orderDao.create(order);
+        return order;
     }
 
     @Override

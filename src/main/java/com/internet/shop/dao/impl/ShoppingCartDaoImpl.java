@@ -3,8 +3,10 @@ package com.internet.shop.dao.impl;
 import com.internet.shop.dao.ShoppingCartDao;
 import com.internet.shop.db.Storage;
 import com.internet.shop.lib.Dao;
-import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -15,20 +17,18 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     }
 
     @Override
-    public ShoppingCart addProduct(ShoppingCart shoppingCart, Product product) {
-        shoppingCart.getProducts().add(product);
+    public ShoppingCart update(ShoppingCart shoppingCart) {
+        IntStream.range(0, Storage.shoppingCartStorage.size())
+                .filter(index -> Storage.shoppingCartStorage.get(index).getId().equals(shoppingCart.getId()))
+                .forEach(index -> Storage.shoppingCartStorage.set(index, shoppingCart));
         return shoppingCart;
     }
 
     @Override
-    public boolean deleteProduct(ShoppingCart shoppingCart, Product product) {
-        return shoppingCart.getProducts().remove(product);
+    public List<ShoppingCart> getAll() {
+        return Storage.shoppingCartStorage;
     }
 
-    @Override
-    public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.getProducts().clear();
-    }
 
     @Override
     public ShoppingCart getByUserId(Long userId) {

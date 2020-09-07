@@ -10,7 +10,7 @@ import com.internet.shop.service.ShoppingCartService;
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
-    ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
 
     @Override
     public ShoppingCart create(ShoppingCart shoppingCart) {
@@ -19,17 +19,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart addProduct(ShoppingCart shoppingCart, Product product) {
-        return shoppingCartDao.addProduct(shoppingCart, product);
+        shoppingCart.getProducts().add(product);
+        return shoppingCart;
     }
 
     @Override
     public boolean deleteProduct(ShoppingCart shoppingCart, Product product) {
-        return shoppingCartDao.deleteProduct(shoppingCart, product);
+        return shoppingCart.getProducts().remove(product);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCartDao.clear(shoppingCart);
+        shoppingCart.getProducts().clear();
     }
 
     @Override

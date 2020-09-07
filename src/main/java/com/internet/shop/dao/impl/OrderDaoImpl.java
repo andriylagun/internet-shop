@@ -6,25 +6,19 @@ import com.internet.shop.db.Storage;
 import com.internet.shop.lib.Dao;
 import com.internet.shop.lib.Inject;
 import com.internet.shop.model.Order;
-import com.internet.shop.model.Product;
-import com.internet.shop.model.ShoppingCart;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Dao
 public class OrderDaoImpl implements OrderDao {
     @Inject
-    ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
 
     @Override
-    public Order completeOrder(ShoppingCart shoppingCart) {
-        List<Product> products = List.copyOf(shoppingCart.getProducts());
-        Long userId = shoppingCart.getUserId();
-        Order order = new Order(userId);
-        order.setProducts(products);
+    public Order create(Order order) {
         Storage.addOrder(order);
-        shoppingCartDao.clear(shoppingCart);
         return order;
     }
 
@@ -41,8 +35,7 @@ public class OrderDaoImpl implements OrderDao {
     public Optional<Order> get(Long id) {
         return Storage.orderStorage
                 .stream()
-                .filter(order -> order.getId()
-                        .equals(id))
+                .filter(order -> order.getId().equals(id))
                 .findFirst();
     }
 
@@ -52,8 +45,15 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public Order update(Order order) {
+        IntStream.range(0, Storage.orderStorage.size())
+                .filter(index -> Storage.orderStorage.get(index).getId().equals(order.getId()))
+                .forEach(index -> Storage.orderStorage.set(index, order));
+        return order;
+    }
+
+    @Override
     public boolean delete(Long id) {
-        return Storage.orderStorage
-                .removeIf(order -> order.getId().equals(id));
+        return Storage.orderStorage.removeIf(order -> order.getId().equals(id));
     }
 }

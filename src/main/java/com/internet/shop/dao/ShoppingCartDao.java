@@ -3,14 +3,14 @@ package com.internet.shop.dao;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 
+import java.util.List;
+
 public interface ShoppingCartDao {
     ShoppingCart create(ShoppingCart shoppingCart);
 
-    ShoppingCart addProduct(ShoppingCart shoppingCart, Product product);
+    ShoppingCart update(ShoppingCart shoppingCart);
 
-    boolean deleteProduct(ShoppingCart shoppingCart, Product product);
-
-    void clear(ShoppingCart shoppingCart);
+    List<ShoppingCart> getAll();
 
     ShoppingCart getByUserId(Long userId);
 
