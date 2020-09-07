@@ -6,7 +6,7 @@
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
         <servlet-name>index</servlet-name>
-        <servlet-class>com.internet.shop.сontroller.IndexController</servlet-class>
+        <servlet-class>com.internet.shop.controller.IndexController</servlet-class>
     </servlet>
 
     <servlet-mapping>

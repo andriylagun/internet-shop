@@ -6,11 +6,10 @@ import com.internet.shop.db.Storage;
 import com.internet.shop.lib.Dao;
 import com.internet.shop.lib.Inject;
 import com.internet.shop.model.Order;
-import com.internet.shop.model.Product;
-import com.internet.shop.model.ShoppingCart;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Dao
 public class OrderDaoImpl implements OrderDao {
@@ -21,14 +20,14 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> getUserOrders(Long userId) {
         return Storage.orderStorage
                 .stream()
-                .filter(order -> order.getUserId()
-                        .equals(userId))
+                .filter(order -> order.getUserId().equals(userId))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Order create(Order element) {
-        return null;
+    public Order create(Order order) {
+        Storage.addOrder(order);
+        return order;
     }
 
     @Override
@@ -46,8 +45,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order update(Order element) {
-        return null;
+    public Order update(Order order) {
+        IntStream.range(0, Storage.orderStorage.size())
+                .filter(index -> Storage.orderStorage.get(index).getId().equals(order.getId()))
+                .forEach(index -> Storage.orderStorage.set(index, order));
+        return order;
     }
 
     @Override

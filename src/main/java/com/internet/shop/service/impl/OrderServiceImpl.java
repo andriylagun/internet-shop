@@ -12,15 +12,15 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Inject
-    OrderDao orderDao;
+    private OrderDao orderDao;
 
     @Override
     public Order completeOrder(ShoppingCart shoppingCart) {
-        List<Product> products = List.copyOf(shoppingCart.getProducts());
+        List<Product> products = shoppingCart.getProducts();
         Long userId = shoppingCart.getUserId();
         Order order = new Order(userId);
         order.setProducts(products);
-        orderDao.create(order);
+        create(order);
         shoppingCart.getProducts().clear();
         return order;
     }
@@ -31,14 +31,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order create(Order element) {
-        return null;
+    public Order create(Order order) {
+        return orderDao.create(order);
     }
 
     @Override
     public Order get(Long id) {
-        return orderDao.get(id)
-                .orElseThrow();
+        return orderDao.get(id).get();
     }
 
     @Override
@@ -47,8 +46,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order update(Order element) {
-        return null;
+    public Order update(Order order) {
+        return orderDao.update(order);
     }
 
     @Override

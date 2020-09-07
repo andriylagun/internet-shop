@@ -6,11 +6,12 @@ import com.internet.shop.lib.Service;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.service.ShoppingCartService;
+import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
-    ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
 
     @Override
     public ShoppingCart create(ShoppingCart shoppingCart) {
@@ -18,25 +19,48 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public ShoppingCart get(Long id) {
+        return shoppingCartDao.get(id).get();
+    }
+
+    @Override
+    public List<ShoppingCart> getAll() {
+        return shoppingCartDao.getAll();
+    }
+
+    @Override
+    public ShoppingCart update(ShoppingCart shoppingCart) {
+        return shoppingCartDao.update(shoppingCart);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        return shoppingCartDao.delete(id);
+    }
+
+    @Override
     public ShoppingCart addProduct(ShoppingCart shoppingCart, Product product) {
-        return null;
+        shoppingCart.getProducts().add(product);
+        update(shoppingCart);
+        return shoppingCart;
     }
 
     @Override
     public boolean deleteProduct(ShoppingCart shoppingCart, Product product) {
-        return false;
+        shoppingCart.getProducts().remove(product);
+        update(shoppingCart);
+        return true;
     }
 
     @Override
-    public void clear(ShoppingCart shoppingCart) { }
+    public void clear(ShoppingCart shoppingCart) {
+        shoppingCart.getProducts().clear();
+        update(shoppingCart);
+    }
 
     @Override
     public ShoppingCart getByUserId(Long userId) {
-        return shoppingCartDao.getByUserId(userId);
+        return shoppingCartDao.getByUserId(userId).get();
     }
 
-    @Override
-    public boolean delete(ShoppingCart shoppingCart) {
-        return false;
-    }
 }
