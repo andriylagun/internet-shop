@@ -2,7 +2,6 @@ package com.internet.shop;
 
 import com.internet.shop.db.Storage;
 import com.internet.shop.lib.Injector;
-import com.internet.shop.model.Order;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.model.User;
@@ -10,38 +9,29 @@ import com.internet.shop.service.OrderService;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
-import com.internet.shop.service.impl.OrderServiceImpl;
-import com.internet.shop.service.impl.ShoppingCartServiceImpl;
-import com.internet.shop.service.impl.UserServiceImpl;
 
 public class Application {
     private static Injector injector = Injector.getInstance("com.internet.shop");
 
     public static void main(String[] args) {
-        UserService userService = (UserService) injector.getInstance(UserServiceImpl.class);
-        ProductService productService = (ProductService) injector.getInstance(ProductService.class);
-        ShoppingCartService shoppingCartService = (ShoppingCartService) injector.getInstance(ShoppingCartServiceImpl.class);
-        OrderService orderService = (OrderService) injector.getInstance(OrderServiceImpl.class);
+        UserService userService = (UserService) injector.getInstance(UserService.class);
         User client = new User("Andriy", "andriylagun", "12345678");
-        User secondUser = new User("Jonathan", "john233", "qwersdty");
+        User secondClient = new User("Jonathan", "john233", "qwersdty");
+        User thirdClient = new User("Michael", "michael123", "qwersdty");
         userService.create(client);
-        userService.create(secondUser);
-        ShoppingCart shoppingCart = new ShoppingCart(1L);
-        for (User user : userService.getAll()) {
-            System.out.println(user);
-        }
-        userService.remove(1L);
-        System.out.println("Deleting first user");
-        for (User user : userService.getAll()) {
-            System.out.println(user);
-        }
+        userService.create(secondClient);
+        System.out.println("Get all users: ");
+        userService.getAll().forEach(System.out::println);
+        userService.remove(3L);
+        System.out.println("Deleting third user");
+        userService.getAll().forEach(System.out::println);
         System.out.println("Getting second user");
         System.out.println(userService.get(2L));
-        User tempUser = userService.get(3L);
-        tempUser.setName("Bob");
+        User tempUser = new User("Andriy", "andriylagun", "12345");
+        tempUser.setId(client.getId());
         userService.update(tempUser);
-        System.out.println("Updating 3 user");
-        System.out.println(userService.get(3L));
+        System.out.println(userService.get(1L));
+        ProductService productService = (ProductService) injector.getInstance(ProductService.class);
         Product iphone = new Product("Iphone", 800.50);
         productService.create(iphone);
         Product xiaomi = new Product("Xiaomi Redmi Note 6", 400.0);
@@ -58,35 +48,33 @@ public class Application {
         System.out.println("Deleting iphone:");
         productService.delete(iphone.getId());
         Storage.productStorage.forEach(System.out::println);
-        ShoppingCart firstCart = new ShoppingCart(3L);
-        firstCart.getProducts().add(new Product("sword", 34.5));
+        ShoppingCartService shoppingCartService = (ShoppingCartService) injector
+                .getInstance(ShoppingCartService.class);
+        ShoppingCart firstCart = new ShoppingCart(1L);
+        firstCart.getProducts().add(xiaomi);
         shoppingCartService.create(firstCart);
         ShoppingCart secondCart = new ShoppingCart(2L);
-        secondCart.getProducts().add(new Product("axe", 56D));
+        secondCart.getProducts().add(nokia);
         shoppingCartService.create(secondCart);
-        System.out.println("Getting by user id = 3");
-        System.out.println(shoppingCartService.getByUserId(3L));
-        shoppingCartService.addProduct(firstCart, xiaomi);
+        System.out.println("Getting by user id = 2");
+        System.out.println(shoppingCartService.getByUserId(2L));
+        Product samsung = new Product("Samsung A100", 100000.0);
+        shoppingCartService.addProduct(firstCart, samsung);
         System.out.println("Adding product");
         System.out.println(firstCart);
-        shoppingCartService.deleteProduct(firstCart, xiaomi);
+        shoppingCartService.deleteProduct(firstCart, samsung);
         System.out.println("Deleting product");
         System.out.println(firstCart);
         shoppingCartService.clear(firstCart);
         System.out.println("Cleaning firstCart");
         System.out.println(firstCart);
-        Order firstOrder = new Order(3L);
-        Order secondOrder = new Order(2L);
-        System.out.println("Getting user`s orders");
-        for (Order order : orderService.getUserOrders(3L)) {
-            System.out.println(order);
-        }
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
         System.out.println("Completing order");
-        System.out.println(orderService.completeOrder(firstCart));
+        System.out.println(orderService.completeOrder(secondCart));
+        System.out.println("Getting user`s orders");
+        System.out.println(orderService.getUserOrders(2L));
         orderService.delete(1L);
         System.out.println("Deleting Order");
-        for (Order order : orderService.getAll()) {
-            System.out.println(order);
-        }
+        orderService.getAll().forEach(System.out::println);
     }
 }
