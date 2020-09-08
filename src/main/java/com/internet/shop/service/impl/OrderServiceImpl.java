@@ -7,6 +7,7 @@ import com.internet.shop.model.Order;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.service.OrderService;
+import com.internet.shop.service.ShoppingCartService;
 import java.util.List;
 
 @Service
