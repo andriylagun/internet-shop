@@ -15,6 +15,12 @@ import java.util.stream.IntStream;
 public class OrderDaoImpl implements OrderDao {
     @Inject
     private ShoppingCartDao shoppingCartDao;
+  
+    @Override
+    public Order create(Order order) {
+        Storage.addOrder(order);
+        return order;
+    }
 
     @Override
     public List<Order> getUserOrders(Long userId) {
@@ -34,8 +40,7 @@ public class OrderDaoImpl implements OrderDao {
     public Optional<Order> get(Long id) {
         return Storage.orderStorage
                 .stream()
-                .filter(order -> order.getId()
-                        .equals(id))
+                .filter(order -> order.getId().equals(id))
                 .findFirst();
     }
 
@@ -54,7 +59,6 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean delete(Long id) {
-        return Storage.orderStorage
-                .removeIf(order -> order.getId().equals(id));
+        return Storage.orderStorage.removeIf(order -> order.getId().equals(id));
     }
 }
