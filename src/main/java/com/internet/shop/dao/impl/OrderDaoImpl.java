@@ -31,12 +31,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order create(Order order) {
-        Storage.addOrder(order);
-        return order;
-    }
-
-    @Override
     public Optional<Order> get(Long id) {
         return Storage.orderStorage
                 .stream()
