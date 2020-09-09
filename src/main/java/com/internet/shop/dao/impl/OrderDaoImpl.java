@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 public class OrderDaoImpl implements OrderDao {
     @Inject
     private ShoppingCartDao shoppingCartDao;
-
+  
     @Override
     public Order create(Order order) {
         Storage.addOrder(order);
@@ -26,8 +26,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> getUserOrders(Long userId) {
         return Storage.orderStorage
                 .stream()
-                .filter(order -> order.getUserId()
-                        .equals(userId))
+                .filter(order -> order.getUserId().equals(userId))
                 .collect(Collectors.toList());
     }
 
