@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/users")
 public class ShowAllUsersController extends HttpServlet {
-    private static final Injector INJECTOR = Injector.getInstance("com.internet.shop");
+    private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final UserService userService =
-            (UserService) INJECTOR.getInstance(UserService.class);
+            (UserService) injector.getInstance(UserService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

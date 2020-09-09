@@ -24,7 +24,7 @@
 </head>
 
 <body>
-<%@include file="header.html"%>
+<%@include file="header.jsp"%>
 <div class="container">
     <div class="row justify-content-center align-items-center">
         <div style="text-align: center">
@@ -52,7 +52,7 @@
                             <c:out value="${user.name}"/>
                         </td>
                         <td>
-                            <a class="btn btn-danger btn-sm" href="/users/delete?id=${user.id}">DELETE</a>
+                            <a class="btn btn-danger btn-sm" href="${pageContext.request.contextPath}/users/delete?id=${user.id}">DELETE</a>
                         </td>
                     </tr>
                 </c:forEach>

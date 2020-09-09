@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/shopping-cart/products/remove")
 public class RemoveProductFromCartController extends HttpServlet {
     private static final Long USER_ID = 1L;
-    private static final Injector INJECTOR = Injector.getInstance("com.internet.shop");
+    private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final ShoppingCartService shoppingCartService =
-            (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private final ProductService productService =
-            (ProductService) INJECTOR.getInstance(ProductService.class);
+            (ProductService) injector.getInstance(ProductService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -26,6 +26,6 @@ public class RemoveProductFromCartController extends HttpServlet {
         ShoppingCart shoppingCart = shoppingCartService.getByUserId(USER_ID);
         Product product = productService.get(Long.valueOf(req.getParameter("id")));
         shoppingCartService.deleteProduct(shoppingCart, product);
-        resp.sendRedirect("/shopping-cart");
+        resp.sendRedirect(req.getContextPath() + "/shopping-cart/info");
     }
 }

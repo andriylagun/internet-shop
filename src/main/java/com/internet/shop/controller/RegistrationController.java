@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/register")
 public class RegistrationController extends HttpServlet {
-    private static final Injector INJECTOR = Injector.getInstance("com.internet.shop");
+    private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final UserService userService =
-            (UserService) INJECTOR.getInstance(UserService.class);
+            (UserService) injector.getInstance(UserService.class);
     private final ShoppingCartService shoppingCartService =
-            (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

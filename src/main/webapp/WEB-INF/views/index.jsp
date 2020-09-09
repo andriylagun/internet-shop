@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-<%@include file="header.html"%>
+<%@include file="header.jsp"%>
 <h1 style="font-family: 'Monotype Corsiva',fantasy">Hello World!</h1>
 </body>
 </html>

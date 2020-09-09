@@ -22,10 +22,10 @@
     </style>
 </head>
 <body>
-<%@include file="header.html"%>
+<%@include file="header.jsp"%>
 <div class="container" align="center">
     <h2>Please fill the form to register a new user</h2>
-    <form method="post" action="/register">
+    <form method="post" action="${pageContext.request.contextPath}/register">
                     <div class="form-group">
                         <label class="col-form-label" for="name">Name:</label>
                         <input class="form-control" id="name" name="name" type="text" style="text-align: center; width: 500px">

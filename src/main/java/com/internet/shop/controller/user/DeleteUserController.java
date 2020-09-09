@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/users/delete")
 public class DeleteUserController extends HttpServlet {
-    private static final Injector INJECTOR = Injector.getInstance("com.internet.shop");
+    private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final UserService userService =
-            (UserService) INJECTOR.getInstance(UserService.class);
+            (UserService) injector.getInstance(UserService.class);
     private final ShoppingCartService shoppingCartService =
-            (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -25,6 +25,6 @@ public class DeleteUserController extends HttpServlet {
         ShoppingCart shoppingCart = shoppingCartService.getByUserId(userId);
         shoppingCartService.delete(shoppingCart.getId());
         userService.delete(userId);
-        resp.sendRedirect("/users");
+        resp.sendRedirect(req.getContextPath() + "/users");
     }
 }
