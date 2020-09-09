@@ -23,6 +23,7 @@
 </head>
 <body>
 <%@include file="header.jsp"%>
+<h4 style="color: red">${message}</h4>
 <div class="container" align="center">
     <h2>Please enter product name and price:</h2>
     <p></p>
@@ -33,7 +34,7 @@
         </div>
         <div class="form-group">
             <label class="col-form-label" for="price">Price:</label>
-            <input class="form-control" id="price" name="price" type="text" style="text-align: center; width: 500px">
+            <input class="form-control" id="price" name="price" type="number" style="text-align: center; width: 500px " required>
         </div>
         <button class="btn btn-primary" type="submit">Save</button>
         <button class="btn btn-secondary" type="reset">Reset</button>
