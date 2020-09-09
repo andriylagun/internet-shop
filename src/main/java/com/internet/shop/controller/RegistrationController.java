@@ -23,7 +23,7 @@ public class RegistrationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("views/register.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/views/register.jsp").forward(req, resp);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class RegistrationController extends HttpServlet {
             resp.sendRedirect("/users");
         } else {
             req.setAttribute("message", "Your passwords are different. Please try again.");
-            req.getRequestDispatcher("views/register.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/views/register.jsp").forward(req, resp);
         }
     }
 }

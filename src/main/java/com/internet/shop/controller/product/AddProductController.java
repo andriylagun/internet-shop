@@ -20,7 +20,7 @@ public class AddProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("products", productService.getAll());
-        req.getRequestDispatcher("/views/addProduct.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/addProduct.jsp").forward(req, resp);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class AddProductController extends HttpServlet {
         String price = req.getParameter("price");
         productService.create(new Product(name, Double.valueOf(price)));
         req.setAttribute("products", productService.getAll());
-        req.getRequestDispatcher("/views/addProduct.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/addProduct.jsp").forward(req, resp);
     }
 }

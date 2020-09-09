@@ -22,6 +22,6 @@ public class ShowAllProductsController extends HttpServlet {
             throws ServletException, IOException {
         List<Product> products = productService.getAll();
         req.setAttribute("products", products);
-        req.getRequestDispatcher("/views/allProducts.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/allProducts.jsp").forward(req, resp);
     }
 }

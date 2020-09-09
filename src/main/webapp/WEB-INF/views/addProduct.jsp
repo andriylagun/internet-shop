@@ -24,7 +24,7 @@
 <body>
 <%@include file="header.html"%>
 <div class="container" align="center">
-    <h2>Please fill the form to register a new user</h2>
+    <h2>Please enter product name and price:</h2>
     <p></p>
     <form method="post" action="/products/add">
         <div class="form-group">
