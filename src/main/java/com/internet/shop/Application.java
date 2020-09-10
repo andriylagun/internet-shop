@@ -29,7 +29,7 @@ public class Application {
         userService.create(userForDelete);
         System.out.println("Get all users: ");
         userService.getAll().forEach(System.out::println);
-        userService.remove(3L);
+        userService.delete(3L);
         System.out.println("Deleting third user");
         userService.getAll().forEach(System.out::println);
         System.out.println("Getting second user");
