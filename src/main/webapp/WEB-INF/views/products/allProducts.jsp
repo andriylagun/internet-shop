@@ -45,7 +45,7 @@
                             <c:out value="${product.price}"/>
                         </td>
                         <td>
-                            <a class="btn btn-success btn-small" href="/shopping-cart/products/add?id=${product.id}">Add to cart</a>
+                            <a class="btn btn-success btn-small" href="${pageContext.request.contextPath}/shopping-cart/products/add?id=${product.id}">Add to cart</a>
                         </td>
                     </tr>
                 </c:forEach>
