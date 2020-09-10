@@ -14,51 +14,40 @@
     <script crossorigin="anonymous"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>All users | MyShop</title>
-    <style>
-        body {
-            background: url("https://i.imgur.com/gjb60y0.png") no-repeat;
-            background-size: cover;
-        }
-    </style>
+    <title>User orders | MyShop</title>
 </head>
 <body>
-<%@include file="header.jsp"%>
+<%@include file="../header.jsp"%>
 <div class="container">
     <div class="row justify-content-center align-items-center">
         <div style="text-align: center">
-            <h3 id="all-products">All products:</h3>
+            <h3 id="user-orders">My orders:</h3>
             <p></p>
-            <table class="table table-bordered table-hover" aria-describedby="all-products">
+            <table class="table table-bordered table-hover" aria-describedby="my-orders">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Add to cart</th>
+                    <th scope="col">UserID</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="product" items="${products}">
+                <c:forEach var="order" items="${orders}">
                     <tr>
                         <th scope="row">
-                            <c:out value="${product.id}"/>
+                            <c:out value="${order.id}"/>
                         </th>
                         <td>
-                            <c:out value="${product.name}"/>
+                            <c:out value="${order.userId}"/>
                         </td>
                         <td>
-                            <c:out value="${product.price}"/>
-                        </td>
-                        <td>
-                            <a class="btn btn-success btn-small" href="/shopping-cart/products/add?id=${product.id}">Add to cart</a>
+                            <a class="btn btn-dark" href="${pageContext.request.contextPath}/order/info?id=${order.id}">Show order</a>
+                            <a class="btn btn-dark" href="${pageContext.request.contextPath}/orders/delete?id=${order.id}">Remove</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a class="btn btn-dark" href="${pageContext.request.contextPath}/products/add">Add new product</a>
-            <a class="btn btn-dark" href="${pageContext.request.contextPath}/shopping-cart">Cart</a>
         </div>
     </div>
 </div>
