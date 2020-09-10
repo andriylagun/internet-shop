@@ -14,10 +14,16 @@
     <script crossorigin="anonymous"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>All products | MyShop</title>
+    <title>All users | MyShop</title>
+    <style>
+        body {
+            background: url("https://i.imgur.com/gjb60y0.png") no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
-<%@include file="../header.jsp"%>
+<%@include file="header.jsp"%>
 <div class="container">
     <div class="row justify-content-center align-items-center">
         <div style="text-align: center">
@@ -51,6 +57,7 @@
                 </c:forEach>
                 </tbody>
             </table>
+            <a class="btn btn-dark" href="${pageContext.request.contextPath}/products/add">Add new product</a>
             <a class="btn btn-dark" href="${pageContext.request.contextPath}/shopping-cart">Cart</a>
         </div>
     </div>
