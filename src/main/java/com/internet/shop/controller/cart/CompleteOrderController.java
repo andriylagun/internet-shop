@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/order/add")
 public class CompleteOrderController extends HttpServlet {
-    private static final String SHOPPING_CART_ID = "scId";
+    private static final Long USER_ID = 1L;
     private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final ShoppingCartService shoppingCartService =
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
@@ -23,8 +23,7 @@ public class CompleteOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Long scId = Long.valueOf(req.getParameter(SHOPPING_CART_ID));
-        ShoppingCart shoppingCart = shoppingCartService.get(scId);
+        ShoppingCart shoppingCart = shoppingCartService.getByUserId(USER_ID);
         Order order = orderService.completeOrder(shoppingCart);
         resp.sendRedirect(req.getContextPath() + "/order/info?id=" + order.getId());
     }

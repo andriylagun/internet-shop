@@ -33,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="product" items="${products}">
+                <c:forEach var="product" items="${shoppingCart.products}">
                     <tr>
                         <td>
                             <c:out value="${product.name}"/>
@@ -48,7 +48,7 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <a class="btn btn-dark btn-sm" href="${pageContext.request.contextPath}/order/add?scId=${scId}">Create order</a>
+            <a class="btn btn-dark btn-sm" href="${pageContext.request.contextPath}/order/add?id=${shoppingCart.userId}">Create order</a>
         </div>
     </div>
 </div>
