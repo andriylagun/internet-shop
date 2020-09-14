@@ -27,9 +27,6 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/home">HomePage |</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" href="${pageContext.request.contextPath}/register">Registration |</a>
-        </li>
-        <li class="nav-item active">
             <a class="nav-link" href="${pageContext.request.contextPath}/users">Users |</a>
         </li>
         <li class="nav-item active">
