@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-<%@include file="header.jsp"%>
+<%@include file="../header.jsp"%>
 <div class="container">
     <div class="row justify-content-center align-items-center">
         <div style="text-align: center">

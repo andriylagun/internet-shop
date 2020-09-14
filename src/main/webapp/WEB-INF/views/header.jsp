@@ -24,7 +24,7 @@
 <div class="navbar navbar-expand-sm bg-dark navbar-dark">
     <ul class="navbar-nav">
         <li class="nav-item active">
-            <a class="nav-link" href="${pageContext.request.contextPath}/">HomePage |</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/home">HomePage |</a>
         </li>
         <li class="nav-item active">
             <a class="nav-link" href="${pageContext.request.contextPath}/register">Registration |</a>
@@ -42,12 +42,15 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/admin/orders">AllOrders(admin) |</a>
         </li>
         <li class="nav-item active" style="position: absolute; right: 0px; top: 10px">
-            <a class="nav-link" href="${pageContext.request.contextPath}/fill">FillData</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/logout">LogOut</a>
         </li>
         <li class="nav-item active" style="position: absolute; right: 100px; top: 10px">
-            <a class="nav-link" href="${pageContext.request.contextPath}/user/orders">MyOrders</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/fill">FillData</a>
         </li>
         <li class="nav-item active" style="position: absolute; right: 200px; top: 10px">
+            <a class="nav-link" href="${pageContext.request.contextPath}/user/orders">MyOrders</a>
+        </li>
+        <li class="nav-item active" style="position: absolute; right: 300px; top: 10px">
             <a class="nav-link" href="${pageContext.request.contextPath}/shopping-cart">Shopping cart</a>
         </li>
     </ul>
