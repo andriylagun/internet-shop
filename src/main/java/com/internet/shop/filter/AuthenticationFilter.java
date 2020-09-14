@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServletResponse;
                 urlPatterns = "/*")
 public class AuthenticationFilter implements Filter {
     private static final String USER_ID = "userId";
-    private List<String> initParams;
+    private List<String> excludeUrls;
 
     @Override
     public void init(FilterConfig filterConfig) {
-        initParams = Arrays.asList(filterConfig.getInitParameter("urls").split(","));
+        excludeUrls = Arrays.asList(filterConfig.getInitParameter("urls").split(","));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String servletPath = req.getServletPath();
-        if (!initParams.contains(servletPath)
+        if (!excludeUrls.contains(servletPath)
                 && req.getSession().getAttribute(USER_ID) == null) {
             resp.sendRedirect("/home");
         } else {
