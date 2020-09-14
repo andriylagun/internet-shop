@@ -13,6 +13,12 @@
     <script crossorigin="anonymous"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background: url("https://i.imgur.com/gjb60y0.png") no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
 <div class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -28,6 +34,21 @@
         </li>
         <li class="nav-item active">
             <a class="nav-link" href="${pageContext.request.contextPath}/products">Products |</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="${pageContext.request.contextPath}/admin/products">Products(admin) |</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="${pageContext.request.contextPath}/admin/orders">AllOrders(admin) |</a>
+        </li>
+        <li class="nav-item active" style="position: absolute; right: 0px; top: 10px">
+            <a class="nav-link" href="${pageContext.request.contextPath}/fill">FillData</a>
+        </li>
+        <li class="nav-item active" style="position: absolute; right: 100px; top: 10px">
+            <a class="nav-link" href="${pageContext.request.contextPath}/user/orders">MyOrders</a>
+        </li>
+        <li class="nav-item active" style="position: absolute; right: 200px; top: 10px">
+            <a class="nav-link" href="${pageContext.request.contextPath}/shopping-cart">Shopping cart</a>
         </li>
     </ul>
     </div>

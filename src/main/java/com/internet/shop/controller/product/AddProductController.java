@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/products/add")
+@WebServlet("/admin/products/add")
 public class AddProductController extends HttpServlet {
     private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final ProductService productService =
@@ -20,7 +20,7 @@ public class AddProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("products", productService.getAll());
-        req.getRequestDispatcher("/WEB-INF/views/addProduct.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/products/addProduct.jsp").forward(req, resp);
     }
 
     @Override
@@ -31,10 +31,10 @@ public class AddProductController extends HttpServlet {
         if (price.matches("^\\d+[.]*\\d{0,2}")) {
             productService.create(new Product(name, Double.parseDouble(price)));
             req.setAttribute("products", productService.getAll());
-            req.getRequestDispatcher("/WEB-INF/views/addProduct.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/products/addProduct.jsp").forward(req, resp);
         } else {
             req.setAttribute("message", "You entered invalid price format");
-            req.getRequestDispatcher("/WEB-INF/views/addProduct.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/products/addProduct.jsp").forward(req, resp);
         }
     }
 }

@@ -19,7 +19,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order completeOrder(ShoppingCart shoppingCart) {
-        List<Product> products = shoppingCart.getProducts();
+        List<Product> products = List.copyOf(shoppingCart.getProducts());
         Long userId = shoppingCart.getUserId();
         Order order = new Order(userId);
         order.setProducts(products);
