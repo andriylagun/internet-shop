@@ -24,7 +24,7 @@
 <div class="navbar navbar-expand-sm bg-dark navbar-dark">
     <ul class="navbar-nav">
         <li class="nav-item active">
-            <a class="nav-link" href="${pageContext.request.contextPath}/home">HomePage |</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/index">HomePage |</a>
         </li>
         <li class="nav-item active" style="position: absolute; right: 0px; top: 10px">
             <button class="btn btn-dark" data-target=".bd-example-modal-sm" data-toggle="modal" type="button">Login
