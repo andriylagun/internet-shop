@@ -7,10 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/")
+@WebServlet({"/","/index"})
 public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req,resp);
+        if (req.getSession().getAttribute("userId") != null) {
+            req.getRequestDispatcher("/WEB-INF/views/homepage.jsp").forward(req, resp);
+        } else {
+            req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
+        }
     }
 }

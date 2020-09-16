@@ -42,4 +42,11 @@ public class UserDaoImpl implements UserDao {
         return Storage.userStorage
                 .removeIf(user -> user.getId().equals(id));
     }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        return Storage.userStorage.stream()
+                .filter(user -> user.getLogin().equals(login))
+                .findFirst();
+    }
 }

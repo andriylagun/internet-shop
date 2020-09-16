@@ -21,12 +21,6 @@ public class RegistrationController extends HttpServlet {
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/views/register.jsp").forward(req, resp);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String name = req.getParameter("name");
@@ -37,10 +31,10 @@ public class RegistrationController extends HttpServlet {
             User user = new User(name, login, password);
             userService.create(user);
             shoppingCartService.create(new ShoppingCart(user.getId()));
-            resp.sendRedirect("/users");
+            resp.sendRedirect("/index");
         } else {
             req.setAttribute("message", "Your passwords are different. Please try again.");
-            req.getRequestDispatcher("WEB-INF/views/register.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/views/index.jsp").forward(req, resp);
         }
     }
 }
