@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(initParams =
-            @WebInitParam(name = "urls", value = "/home,/login,/register"),
+            @WebInitParam(name = "urls", value = "/index,/login,/register"),
                 urlPatterns = "/*")
 public class AuthenticationFilter implements Filter {
     private static final String USER_ID = "userId";
@@ -34,7 +34,7 @@ public class AuthenticationFilter implements Filter {
         String servletPath = req.getServletPath();
         if (!excludeUrls.contains(servletPath)
                 && req.getSession().getAttribute(USER_ID) == null) {
-            resp.sendRedirect("/home");
+            resp.sendRedirect("/index");
         } else {
             filterChain.doFilter(req, resp);
         }

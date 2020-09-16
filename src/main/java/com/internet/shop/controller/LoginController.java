@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
-    public static final Long USER_ID = 1L;
+    public static final String USER_ID = "userId";
     private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
@@ -23,12 +23,12 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String login = req.getParameter("username");
+        String password = req.getParameter("password");
         try {
-            String password = req.getParameter("password");
             User user = authenticationService.login(login, password);
             HttpSession httpSession = req.getSession();
-            httpSession.setAttribute("userId", USER_ID);
-            resp.sendRedirect(req.getContextPath() + "/home");
+            httpSession.setAttribute(USER_ID, user.getId());
+            resp.sendRedirect(req.getContextPath() + "/index");
         } catch (AuthException e) {
             req.setAttribute("message", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
