@@ -26,6 +26,9 @@
         <li class="nav-item active">
             <a class="nav-link" href="${pageContext.request.contextPath}/index">HomePage |</a>
         </li>
+        <li class="nav-item active" style="position: absolute; right: 200px; top: 10px">
+            <a class="nav-link" href="${pageContext.request.contextPath}/fill">FillData</a>
+        </li>
         <li class="nav-item active" style="position: absolute; right: 0px; top: 10px">
             <button class="btn btn-dark" data-target=".bd-example-modal-sm" data-toggle="modal" type="button">Login
             </button>
