@@ -2,12 +2,14 @@ package com.internet.shop.controller;
 
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
+import com.internet.shop.model.Role;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.model.User;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
 import java.io.IOException;
+import java.util.Set;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,9 @@ public class FillDataController extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        userService.create(new User("Bob", "bob", "123"));
+        User user = new User("Bob", "bob", "123");
+        user.setRoles(Set.of(Role.of("ADMIN")));
+        userService.create(user);
         shoppingCartService.create(new ShoppingCart(1L));
         productService.create(new Product("Nokia 1100", 100.0));
         productService.create(new Product("Iphone 4s", 300.0));
