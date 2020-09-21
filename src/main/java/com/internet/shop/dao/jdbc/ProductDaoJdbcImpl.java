@@ -87,11 +87,11 @@ public class ProductDaoJdbcImpl implements ProductDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
                         = connection.prepareStatement(updateProductQuery)) {
-            statement.setString(1, element.getName());
-            statement.setDouble(2, element.getPrice());
-            statement.setLong(3, element.getId());
+            statement.setString(1, product.getName());
+            statement.setDouble(2, product.getPrice());
+            statement.setLong(3, product.getId());
             statement.executeUpdate();
-            return element;
+            return product;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to update " + element, e);
         }
