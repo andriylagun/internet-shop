@@ -93,7 +93,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
             statement.executeUpdate();
             return product;
         } catch (SQLException e) {
-            throw new DataProcessingException("Unable to update " + element, e);
+            throw new DataProcessingException("Unable to update " + product, e);
         }
     }
 
