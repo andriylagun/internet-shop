@@ -18,29 +18,31 @@ import java.util.Optional;
 public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
-    public Product create(Product element) {
+    public Product create(Product product) {
         String insertProductQuery
-                = "INSERT INTO products (name, price, deleted) VALUES (?, ?, ?);";
+                = "INSERT INTO products (name, price) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
                         = connection.prepareStatement(insertProductQuery,
                         Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, element.getName());
-            statement.setDouble(2, element.getPrice());
+            statement.setString(1, product.getName());
+            statement.setDouble(2, product.getPrice());
             statement.executeUpdate();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                resultSet.next();
-                element.setId(resultSet.getLong(1));
-                return element;
+                if (resultSet.next()) {
+                    product.setId(resultSet.getLong(1));
+                }
+                return product;
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Unable to create " + element, e);
+            throw new DataProcessingException("Unable to create product" + product, e);
         }
     }
 
     @Override
     public Optional<Product> get(Long id) {
-        String selectProductQuery = "SELECT * FROM products WHERE product_id = ?;";
+        String selectProductQuery = "SELECT * FROM products WHERE product_id = ? "
+                + "AND deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
                         = connection.prepareStatement(selectProductQuery)) {
@@ -59,7 +61,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public List<Product> getAll() {
-        String selectAllProductsQuery = "SELECT * FROM products WHERE deleted = ?;";
+        String selectAllProductsQuery = "SELECT * FROM products WHERE deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
                         = connection.prepareStatement(selectAllProductsQuery)) {
@@ -78,9 +80,10 @@ public class ProductDaoJdbcImpl implements ProductDao {
     }
 
     @Override
-    public Product update(Product element) {
+    public Product update(Product product) {
         String updateProductQuery
-                = "UPDATE products SET name = ?, price = ?, deleted = ? WHERE product_id = ?;";
+                = "UPDATE products SET name = ?, price = ?, deleted = ? "
+                + "WHERE product_id = ? AND deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
                         = connection.prepareStatement(updateProductQuery)) {
@@ -103,10 +106,9 @@ public class ProductDaoJdbcImpl implements ProductDao {
                         = connection.prepareStatement(updateAvailabilityQuery)) {
             statement.setBoolean(1, false);
             statement.setLong(2, id);
-            int numberOfRowsAffected = statement.executeUpdate();
-            return numberOfRowsAffected != 0;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Unable to mark product with ID "
+            throw new DataProcessingException("Unable to mark product deleted with ID "
                     + id + " as unavailable", e);
         }
     }
