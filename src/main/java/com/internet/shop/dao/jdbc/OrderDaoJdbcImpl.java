@@ -98,8 +98,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public Order update(Order order) {
-        String updateOrderQuery = "UPDATE orders SET user_id = ? WHERE order_id = ? " +
-                "AND deleted = false;";
+        String updateOrderQuery = "UPDATE orders SET user_id = ? WHERE order_id = ? "
+                + "AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                          = connection.prepareStatement(updateOrderQuery)) {
