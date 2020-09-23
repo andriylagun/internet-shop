@@ -14,4 +14,9 @@ public class Order {
         products = new ArrayList<>();
         this.userId = userId;
     }
+
+    public Order(List<Product> products, Long userId) {
+        this.products = products;
+        this.userId = userId;
+    }
 }
