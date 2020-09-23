@@ -31,8 +31,8 @@ public class FillDataController extends HttpServlet {
         user.setRoles(Set.of(Role.of("ADMIN")));
         userService.create(user);
         shoppingCartService.create(new ShoppingCart(1L));
-        productService.create(new Product("Nokia 1100", 100.0));
-        productService.create(new Product("Iphone 4s", 300.0));
+        productService.create(new Product(1L, "Nokia 1100", 100.0));
+        productService.create(new Product(2L,"Iphone 4s", 300.0));
         resp.sendRedirect(req.getContextPath() + "/");
     }
 }
