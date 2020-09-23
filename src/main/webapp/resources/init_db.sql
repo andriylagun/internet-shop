@@ -28,6 +28,7 @@ CREATE TABLE `orders`
 (
     `order_id` BIGINT(11) NOT NULL AUTO_INCREMENT,
     `user_id`  BIGINT(11) NOT NULL,
+    `deleted` BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (`order_id`),
     INDEX `orders_users_fk_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `orders_users_fk`

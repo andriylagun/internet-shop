@@ -40,7 +40,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public Optional<Order> get(Long id) {
-        String selectOrderQuery = "SELECT * FROM orders WHERE order_id = ?;";
+        String selectOrderQuery = "SELECT * FROM orders WHERE order_id = ? AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                         = connection.prepareStatement(selectOrderQuery)) {
@@ -59,7 +59,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public List<Order> getUserOrders(Long userId) {
-        String selectAllOrdersQuery = "SELECT * FROM orders WHERE user_id = ?;";
+        String selectAllOrdersQuery = "SELECT * FROM orders WHERE user_id = ? AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                         = connection.prepareStatement(selectAllOrdersQuery)) {
@@ -80,7 +80,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public List<Order> getAll() {
-        String selectAllOrdersQuery = "SELECT * FROM orders;";
+        String selectAllOrdersQuery = "SELECT * FROM orders WHERE deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
                          = connection.prepareStatement(selectAllOrdersQuery);
@@ -98,7 +98,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public Order update(Order order) {
-        String updateOrderQuery = "UPDATE orders SET user_id = ? WHERE order_id = ?;";
+        String updateOrderQuery = "UPDATE orders SET user_id = ? WHERE order_id = ? " +
+                "AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                          = connection.prepareStatement(updateOrderQuery)) {
@@ -115,7 +116,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteOrderQuery = "DELETE FROM orders WHERE order_id = ?;";
+        String deleteOrderQuery = "UPDATE orders SET deleted = TRUE WHERE order_id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                         = connection.prepareStatement(deleteOrderQuery)) {
