@@ -14,6 +14,7 @@ CREATE TABLE `users`
     `name`     VARCHAR(225)   NOT NULL,
     `login`    VARCHAR(225)   NOT NULL,
     `password` VARCHAR(225)   NOT NULL,
+    `deleted`  TINYINT        NOT NULL DEFAULT true,
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `login_UNIQUE` (`login` ASC) VISIBLE
 );

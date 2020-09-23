@@ -30,6 +30,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 resultSet.next();
                 order.setId(resultSet.getLong(1));
+                statement.close();
                 insertOrdersProducts(order, connection);
                 return order;
             }
@@ -40,7 +41,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public Optional<Order> get(Long id) {
-        String selectOrderQuery = "SELECT * FROM orders WHERE order_id = ? AND deleted = false;";
+        String selectOrderQuery = "SELECT * FROM orders WHERE order_id = ? "
+                + "AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                         = connection.prepareStatement(selectOrderQuery)) {
@@ -59,19 +61,19 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public List<Order> getUserOrders(Long userId) {
-        String selectAllOrdersQuery = "SELECT * FROM orders WHERE user_id = ? AND deleted = false;";
+        String selectAllOrdersQuery = "SELECT * FROM orders WHERE user_id = ? "
+                + "AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                        = connection.prepareStatement(selectAllOrdersQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(selectAllOrdersQuery)) {
             statement.setLong(1, userId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<Order> allOrders = new ArrayList<>();
-                while (resultSet.next()) {
-                    Order order = getOrderFromResultSet(resultSet, connection);
-                    allOrders.add(order);
-                }
-                return allOrders;
+            ResultSet resultSet = statement.executeQuery();
+            List<Order> allOrders = new ArrayList<>();
+            while (resultSet.next()) {
+                Order order = getOrderFromResultSet(resultSet, connection);
+                allOrders.add(order);
             }
+            return allOrders;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to retrieve all orders of user with ID "
                     + userId, e);
@@ -82,8 +84,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
     public List<Order> getAll() {
         String selectAllOrdersQuery = "SELECT * FROM orders WHERE deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement
-                         = connection.prepareStatement(selectAllOrdersQuery);
+                PreparedStatement statement =
+                        connection.prepareStatement(selectAllOrdersQuery);
                 ResultSet resultSet = statement.executeQuery()) {
             List<Order> allOrders = new ArrayList<>();
             while (resultSet.next()) {
@@ -101,8 +103,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
         String updateOrderQuery = "UPDATE orders SET user_id = ? WHERE order_id = ? "
                 + "AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                         = connection.prepareStatement(updateOrderQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(updateOrderQuery)) {
             statement.setLong(1, order.getUserId());
             statement.setLong(2, order.getId());
             statement.executeUpdate();
@@ -118,8 +120,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
     public boolean delete(Long id) {
         String deleteOrderQuery = "UPDATE orders SET deleted = TRUE WHERE order_id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                        = connection.prepareStatement(deleteOrderQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(deleteOrderQuery)) {
             deleteOrderFromOrdersProducts(id,connection);
             statement.setLong(1, id);
             return statement.executeUpdate() != 0;
@@ -131,8 +133,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
     private void insertOrdersProducts(Order order, Connection connection) throws SQLException {
         String insertOrdersProductsQuery
                 = "INSERT INTO orders_products (order_id, product_id) VALUES (?, ?);";
-        try (PreparedStatement insertStatement
-                     = connection.prepareStatement(insertOrdersProductsQuery)) {
+        try (PreparedStatement insertStatement =
+                     connection.prepareStatement(insertOrdersProductsQuery)) {
             for (Product product : order.getProducts()) {
                 insertStatement.setLong(1, order.getId());
                 insertStatement.setLong(2, product.getId());
@@ -154,8 +156,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
             throws SQLException {
         String selectProductIdQuery = "SELECT products.* FROM orders_products "
                 + "JOIN products USING (product_id) WHERE order_id = ?;";
-        try (PreparedStatement statement
-                     = connection.prepareStatement(selectProductIdQuery)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(selectProductIdQuery)) {
             statement.setLong(1, orderId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<Product> products = new ArrayList<>();
@@ -176,8 +178,8 @@ public class OrderDaoJdbcImpl implements OrderDao {
     private void deleteOrderFromOrdersProducts(Long orderId, Connection connection)
             throws SQLException {
         String deleteOrderQuery = "DELETE FROM orders_products WHERE order_id = ?;";
-        try (PreparedStatement statement
-                     = connection.prepareStatement(deleteOrderQuery)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(deleteOrderQuery)) {
             statement.setLong(1, orderId);
             statement.executeUpdate();
         }
