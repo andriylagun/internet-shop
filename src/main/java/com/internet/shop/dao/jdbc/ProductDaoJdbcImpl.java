@@ -63,7 +63,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement =
                          connection.prepareStatement(selectAllProductsQuery)) {
-            statement.setBoolean(1, true);
             ResultSet resultSet = statement.executeQuery();
             List<Product> allProducts = new ArrayList<>();
             while (resultSet.next()) {

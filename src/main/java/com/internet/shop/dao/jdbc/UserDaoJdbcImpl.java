@@ -150,13 +150,9 @@ public class UserDaoJdbcImpl implements UserDao {
         try (PreparedStatement statement =
                      connection.prepareStatement(insertUsersRolesQuery)) {
             for (Role role : user.getRoles()) {
-                statement.setString(1, role.getRoleName().name());
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    resultSet.next();
-                    statement.setLong(1, user.getId());
-                    statement.setLong(2, resultSet.getLong("role_id"));
-                    statement.executeUpdate();
-                }
+                statement.setLong(1, user.getId());
+                statement.setString(2, role.getRoleName().name());
+                statement.executeUpdate();
             }
         }
     }

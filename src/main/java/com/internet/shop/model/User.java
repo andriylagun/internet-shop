@@ -1,5 +1,6 @@
 package com.internet.shop.model;
 
+import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class User {
         this.name = name;
         this.login = login;
         this.password = password;
+        this.roles = new HashSet<>();
     }
 }
