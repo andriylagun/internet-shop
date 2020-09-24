@@ -27,12 +27,13 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
                          Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, shoppingCart.getUserId());
             statement.executeUpdate();
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                resultSet.next();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
                 shoppingCart.setId(resultSet.getLong(1));
+                statement.close();
                 insertCartsProducts(shoppingCart, connection);
-                return shoppingCart;
             }
+            return shoppingCart;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to create " + shoppingCart, e);
         }
@@ -88,6 +89,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             statement.setLong(1, shoppingCart.getUserId());
             statement.setLong(2, shoppingCart.getId());
             statement.executeUpdate();
+            statement.close();
             deleteShoppingCartFromCartsProducts(shoppingCart.getId(), connection);
             insertCartsProducts(shoppingCart, connection);
             return shoppingCart;
@@ -104,8 +106,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
                         = connection.prepareStatement(deleteShoppingCartQuery)) {
             deleteShoppingCartFromCartsProducts(id, connection);
             statement.setLong(1, id);
-            int numberOfRowsDeleted = statement.executeUpdate();
-            return numberOfRowsDeleted != 0;
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to delete cart with ID " + id, e);
         }

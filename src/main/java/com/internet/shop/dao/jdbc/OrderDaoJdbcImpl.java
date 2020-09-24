@@ -27,13 +27,12 @@ public class OrderDaoJdbcImpl implements OrderDao {
                         Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, order.getUserId());
             statement.executeUpdate();
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                resultSet.next();
-                order.setId(resultSet.getLong(1));
-                statement.close();
-                insertOrdersProducts(order, connection);
-                return order;
-            }
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            order.setId(resultSet.getLong(1));
+            statement.close();
+            insertOrdersProducts(order, connection);
+            return order;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to create " + order, e);
         }
@@ -44,16 +43,17 @@ public class OrderDaoJdbcImpl implements OrderDao {
         String selectOrderQuery = "SELECT * FROM orders WHERE order_id = ? "
                 + "AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                        = connection.prepareStatement(selectOrderQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(selectOrderQuery)) {
             statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Order order = getOrderFromResultSet(resultSet, connection);
-                    return Optional.of(order);
-                }
-                return Optional.empty();
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Order order = getOrderFromResultSet(resultSet);
+                statement.close();
+                order.getProducts().addAll(getProductsFromOrderId(order.getId(),connection));
+                return Optional.of(order);
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to get order with ID " + id, e);
         }
@@ -68,12 +68,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
                          connection.prepareStatement(selectAllOrdersQuery)) {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
-            List<Order> allOrders = new ArrayList<>();
-            while (resultSet.next()) {
-                Order order = getOrderFromResultSet(resultSet, connection);
-                allOrders.add(order);
-            }
-            return allOrders;
+            return getAllOrdersFromResultSet(resultSet,connection, statement);
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to retrieve all orders of user with ID "
                     + userId, e);
@@ -87,12 +82,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
                 PreparedStatement statement =
                         connection.prepareStatement(selectAllOrdersQuery);
                 ResultSet resultSet = statement.executeQuery()) {
-            List<Order> allOrders = new ArrayList<>();
-            while (resultSet.next()) {
-                Order order = getOrderFromResultSet(resultSet, connection);
-                allOrders.add(order);
-            }
-            return allOrders;
+            return getAllOrdersFromResultSet(resultSet,connection, statement);
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to retrieve all orders", e);
         }
@@ -108,6 +98,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             statement.setLong(1, order.getUserId());
             statement.setLong(2, order.getId());
             statement.executeUpdate();
+            statement.close();
             deleteOrderFromOrdersProducts(order.getId(), connection);
             insertOrdersProducts(order, connection);
             return order;
@@ -122,7 +113,6 @@ public class OrderDaoJdbcImpl implements OrderDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement =
                          connection.prepareStatement(deleteOrderQuery)) {
-            deleteOrderFromOrdersProducts(id,connection);
             statement.setLong(1, id);
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
@@ -143,11 +133,11 @@ public class OrderDaoJdbcImpl implements OrderDao {
         }
     }
 
-    private Order getOrderFromResultSet(ResultSet resultSet, Connection connection)
+    private Order getOrderFromResultSet(ResultSet resultSet)
             throws SQLException {
         Long id = resultSet.getLong("order_id");
         Long userId = resultSet.getLong("user_id");
-        Order order = new Order(getProductsFromOrderId(id, connection), userId);
+        Order order = new Order(userId);
         order.setId(id);
         return order;
     }
@@ -183,5 +173,19 @@ public class OrderDaoJdbcImpl implements OrderDao {
             statement.setLong(1, orderId);
             statement.executeUpdate();
         }
+    }
+
+    private List<Order> getAllOrdersFromResultSet(ResultSet resultSet, Connection connection,
+                                                  PreparedStatement statement) throws SQLException {
+        List<Order> ordersList = new ArrayList<>();
+        while (resultSet.next()) {
+            Order order = getOrderFromResultSet(resultSet);
+            ordersList.add(order);
+        }
+        statement.close();
+        for (Order order : ordersList) {
+            order.getProducts().addAll(getProductsFromOrderId(order.getId(),connection));
+        }
+        return ordersList;
     }
 }

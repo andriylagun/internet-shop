@@ -22,19 +22,17 @@ public class ProductDaoJdbcImpl implements ProductDao {
         String insertProductQuery
                 = "INSERT INTO products (name, price) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                        = connection.prepareStatement(insertProductQuery,
+                 PreparedStatement statement =
+                         connection.prepareStatement(insertProductQuery,
                          Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, product.getName());
             statement.setDouble(2, product.getPrice());
             statement.executeUpdate();
-
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    product.setId(resultSet.getLong(1));
-                }
-                return product;
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                product.setId(resultSet.getLong(1));
             }
+            return product;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to create product " + product, e);
         }
@@ -43,18 +41,17 @@ public class ProductDaoJdbcImpl implements ProductDao {
     @Override
     public Optional<Product> get(Long id) {
         String selectProductQuery = "SELECT * FROM products WHERE product_id = ? "
-                + "AND avaliable = true;";
+                + "AND available = true;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                        = connection.prepareStatement(selectProductQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(selectProductQuery)) {
             statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Product product = getProductFromResultSet(resultSet);
-                    return Optional.of(product);
-                }
-                return Optional.empty();
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Product product = getProductFromResultSet(resultSet);
+                return Optional.of(product);
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to get product with ID " + id, e);
         }
@@ -64,17 +61,16 @@ public class ProductDaoJdbcImpl implements ProductDao {
     public List<Product> getAll() {
         String selectAllProductsQuery = "SELECT * FROM products WHERE available = true;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                        = connection.prepareStatement(selectAllProductsQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(selectAllProductsQuery)) {
             statement.setBoolean(1, true);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<Product> allProducts = new ArrayList<>();
-                while (resultSet.next()) {
-                    Product product = getProductFromResultSet(resultSet);
-                    allProducts.add(product);
-                }
-                return allProducts;
+            ResultSet resultSet = statement.executeQuery();
+            List<Product> allProducts = new ArrayList<>();
+            while (resultSet.next()) {
+                Product product = getProductFromResultSet(resultSet);
+                allProducts.add(product);
             }
+            return allProducts;
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to retrieve all products", e);
         }
@@ -85,8 +81,8 @@ public class ProductDaoJdbcImpl implements ProductDao {
         String updateProductQuery
                 = "UPDATE products SET name = ?, price = ?, available = true WHERE product_id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement
-                         = connection.prepareStatement(updateProductQuery)) {
+                 PreparedStatement statement =
+                         connection.prepareStatement(updateProductQuery)) {
             statement.setString(1, product.getName());
             statement.setDouble(2, product.getPrice());
             statement.setBoolean(3, product.isAvailable());
@@ -107,6 +103,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
                          = connection.prepareStatement(updateAvailabilityQuery)) {
             statement.setBoolean(1, false);
             statement.setLong(2, id);
+            statement.close();
             deleteProductFromCarts(id, connection);
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
