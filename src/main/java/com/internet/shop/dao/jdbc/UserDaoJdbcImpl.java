@@ -102,7 +102,9 @@ public class UserDaoJdbcImpl implements UserDao {
             }
             statement.close();
             for (User user : allUsers) {
-                user.getRoles().addAll(getRolesFromUserId(user.getId(), connection));
+                if (user != null) {
+                    user.getRoles().addAll(getRolesFromUserId(user.getId(), connection));
+                }
             }
             return allUsers;
         } catch (SQLException e) {
