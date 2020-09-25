@@ -78,7 +78,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
                     + userId, e);
         }
         for (Order order : ordersList) {
-            if(order != null) {
+            if (order != null) {
                 order.getProducts().addAll(getProductsFromOrderId(order.getId()));
             }
         }
@@ -101,7 +101,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             throw new DataProcessingException("Unable to retrieve all orders", e);
         }
         for (Order order : ordersList) {
-            if(order != null) {
+            if (order != null) {
                 order.getProducts().addAll(getProductsFromOrderId(order.getId()));
             }
         }
