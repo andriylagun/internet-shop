@@ -23,7 +23,7 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public User create(User user) {
         String insertUserQuery
-                = "INSERT INTO users (name, login, password) VALUES (?, ?, ?);";
+                = "INSERT INTO users (name, login, password, salt) VALUES (?, ?, ?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
                         = connection.prepareStatement(insertUserQuery,
@@ -31,6 +31,7 @@ public class UserDaoJdbcImpl implements UserDao {
             statement.setString(1, user.getName());
             statement.setString(2, user.getLogin());
             statement.setString(3, user.getPassword());
+            statement.setBytes(4, user.getSalt());
             statement.executeUpdate();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
@@ -114,7 +115,7 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public User update(User element) {
-        String updateUserQuery = "UPDATE users SET name = ?, login = ?, password = ?"
+        String updateUserQuery = "UPDATE users SET name = ?, login = ?, password = ?, salt = ?"
                 + "WHERE user_id = ? AND deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement =
@@ -122,6 +123,7 @@ public class UserDaoJdbcImpl implements UserDao {
             statement.setString(1, element.getName());
             statement.setString(2, element.getLogin());
             statement.setString(3, element.getPassword());
+            statement.setBytes(4, element.getSalt());
             statement.setLong(5, element.getId());
             statement.executeUpdate();
             statement.close();
@@ -164,8 +166,10 @@ public class UserDaoJdbcImpl implements UserDao {
         String name = resultSet.getString("name");
         String login = resultSet.getString("login");
         String password = resultSet.getString("password");
+        byte[] salt = resultSet.getBytes("salt");
         User user = new User(name, login, password);
         user.setId(id);
+        user.setSalt(salt);
         return user;
     }
 
