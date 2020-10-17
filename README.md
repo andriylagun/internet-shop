@@ -26,6 +26,6 @@ frontend: HTML, CSS, Bootstrap, JSP, JSTL<br>
 database: MySQL<br>
 
 # To view the project you need:<br>
-
-
-# Available for admin (login: bob, password: 123)
+Follow the link : https://internet-shop-lagun.herokuapp.com/ <br>
+Click on the "FillData" button for filling admin<br>
+Login as admin: login: bob, password: 123
