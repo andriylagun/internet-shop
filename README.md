@@ -27,5 +27,5 @@ database: MySQL<br>
 
 # To view the project you need:<br>
 Follow the link : https://internet-shop-lagun.herokuapp.com/ <br>
-Click on the "FillData" button for filling admin<br>
+Click on the "FillData" button for add admin<br>
 Login as admin: login: bob, password: 123
